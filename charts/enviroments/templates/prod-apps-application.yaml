@@ -4,7 +4,7 @@ kind: Application
 metadata:
   name: {{ .Values.envs.prod.name }}-application
   # You'll usually want to add your resources to the argocd namespace.
-  namespace: argocd
+  namespace: {{ .Values.envs.prod.destination.namespace }}
     # Add this finalizer ONLY if you want these to cascade delete.
 #  finalizers:
 #    - resources-finalizer.argocd.argoproj.io
@@ -20,8 +20,8 @@ spec:
 #    # helm specific config
 #    #chart: chart-name  # Set this when pulling directly from a Helm repo. DO NOT set for git-hosted Helm charts.
     helm:
-     # Helm values files for overriding values in the helm chart
-     # The path is relative to the spec.source.path directory defined above
+    # Helm values files for overriding values in the helm chart
+    # The path is relative to the spec.source.path directory defined above
       valueFiles:
       - {{ .Values.envs.prod.source.helm.valueFile }}
 
@@ -55,8 +55,8 @@ spec:
 #        - name: FOO
 
   # directory
-  directory:
-    recurse: false # we follow the helm chart format, so no need to recurse
+    directory:
+      recurse: false # we follow the helm chart format, so no need to recurse
 
   destination:
     namespace: {{ .Values.envs.prod.destination.namespace }}
