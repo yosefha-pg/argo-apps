@@ -7,7 +7,7 @@ envs:
     name: dev-apps
     source:
       repoURL: https://github.com/yosefha-pg/argo-apps.git
-      path: charts/environments
+      path: charts/applications
       targetRevision: main
       helm: 
         valueFile: values-dev.yaml
@@ -18,7 +18,7 @@ envs:
     name: prod-apps
     source:
       repoURL: https://github.com/yosefha-pg/argo-apps.git
-      path: charts/environments
+      path: charts/applications
       targetRevision: main
       helm: 
         valueFile: values-prod.yaml
