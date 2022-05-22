@@ -21,6 +21,6 @@ apps:
     name: argo-nginx2
     enabled: false
     source:
-      repoURL: https://github.com/yosefha-pg/argo-nginx2.git
+      repoURL: https://github.com/yosefha-pg/argo-nginx.git
       path: charts/nginx2
       targetRevision: HEAD  
