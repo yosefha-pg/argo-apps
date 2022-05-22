@@ -1,10 +1,11 @@
+{{- $env := .Values.envs.dev -}}
 {{ if eq .Values.envName "dev" }}
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: {{ .Values.envs.dev.name }}-application
+  name: {{ $env.name }}-application
   # You'll usually want to add your resources to the argocd namespace.
-  namespace: {{ .Values.envs.dev.destination.namespace }}
+  namespace: {{ $env.destination.namespace }}
     # Add this finalizer ONLY if you want these to cascade delete.
 #  finalizers:
 #    - resources-finalizer.argocd.argoproj.io
@@ -13,9 +14,9 @@ spec:
   project: default
 
   source:
-    repoURL: {{ .Values.envs.dev.source.repoURL }} # Can point to either a Helm chart repo or a git repo.
-    path:  {{ .Values.envs.dev.source.path }}
-    targetRevision: {{ .Values.envs.dev.source.targetRevision }} # For Helm, this refers to the chart version.
+    repoURL: {{ $env.source.repoURL }} # Can point to either a Helm chart repo or a git repo.
+    path:  {{ $env.source.path }}
+    targetRevision: {{ $env.source.targetRevision }} # For Helm, this refers to the chart version.
     
 #    # helm specific config
 #    #chart: chart-name  # Set this when pulling directly from a Helm repo. DO NOT set for git-hosted Helm charts.
@@ -23,7 +24,7 @@ spec:
     # Helm values files for overriding values in the helm chart
     # The path is relative to the spec.source.path directory defined above
       valueFiles:
-      - {{ .Values.envs.dev.source.helm.valueFile }}
+      - {{ $env.source.helm.valueFile }}
 
 #     # Extra parameters to set (same as setting through values.yaml, but these take precedence)
 #      parameters:
@@ -59,8 +60,8 @@ spec:
       recurse: false # we follow the helm chart format, so no need to recurse
 
   destination:
-    namespace: {{ .Values.envs.dev.destination.namespace }}
-    server: {{ .Values.envs.dev.destination.server }}
+    namespace: {{ $env.destination.namespace }}
+    server: {{ $env.destination.server }}
 
   # Sync policy
   syncPolicy:

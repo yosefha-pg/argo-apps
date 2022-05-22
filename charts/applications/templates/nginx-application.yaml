@@ -1,7 +1,3 @@
-#TODO should every chart have namespace configured separately?
-#TODO Should we use with, to repeat every application?
-#TODO add conditioal if (default "foo" .Bar)
-
 {{- $app := .Values.apps.nginx -}}
 {{ if $app.enabled }}
 apiVersion: argoproj.io/v1alpha1
@@ -25,8 +21,8 @@ spec:
 #    # helm specific config
 #    #chart: chart-name  # Set this when pulling directly from a Helm repo. DO NOT set for git-hosted Helm charts.
     helm:
-     # Helm values files for overriding values in the helm chart
-     # The path is relative to the spec.source.path directory defined above
+      # Helm values files for overriding values in the helm chart
+      # The path is relative to the spec.source.path directory defined above
       valueFiles:
       - {{ .Values.source.helm.valueFile }}
 

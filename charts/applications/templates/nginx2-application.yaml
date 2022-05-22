@@ -20,10 +20,9 @@ spec:
     
 #    # helm specific config
 #    #chart: chart-name  # Set this when pulling directly from a Helm repo. DO NOT set for git-hosted Helm charts.
-    helm:
-    
-    # Helm values files for overriding values in the helm chart
-    # The path is relative to the spec.source.path directory defined above
+    helm:    
+      # Helm values files for overriding values in the helm chart
+      # The path is relative to the spec.source.path directory defined above
       valueFiles:
       - {{ .Values.source.helm.valueFile }}
 
