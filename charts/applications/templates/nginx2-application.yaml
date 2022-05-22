@@ -1,4 +1,4 @@
-{{- $app != .Values.apps.nginx2 -}}
+{{- $app := .Values.apps.nginx2 -}}
 {{ if $app.enabled }}
 apiVersion: argoproj.io/v1alpha1
 kind: Application

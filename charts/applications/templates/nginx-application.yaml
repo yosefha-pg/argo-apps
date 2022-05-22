@@ -2,7 +2,7 @@
 #TODO Should we use with, to repeat every application?
 #TODO add conditioal if (default "foo" .Bar)
 
-{{- $app != .Values.apps.nginx -}}
+{{- $app := .Values.apps.nginx -}}
 {{ if $app.enabled }}
 apiVersion: argoproj.io/v1alpha1
 kind: Application
