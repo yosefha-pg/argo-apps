@@ -1,3 +1,5 @@
+{{- $app != .Values.apps.nginx2 -}}
+{{ if $app.enabled }}
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
@@ -96,6 +98,6 @@ spec:
 #    kind: "*"
 #    managedFieldsManagers:
 #    - kube-controller-manager
-
+{{ end }}
 
 
