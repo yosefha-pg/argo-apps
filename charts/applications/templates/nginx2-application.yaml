@@ -55,7 +55,8 @@ spec:
 
   # directory
   directory:
-      recurse: false # we follow the helm chart format, so need to recurse
+    recurse: false # we follow the helm chart format, so no need to recurse
+
 
   destination:
     namespace: {{ .Values.apps.nginx2.name }}

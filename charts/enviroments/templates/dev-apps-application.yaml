@@ -1,3 +1,4 @@
+{{ if eq .Values.env "dev" }}
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
@@ -13,7 +14,7 @@ spec:
 
   source:
     repoURL: {{ .Values.envs.dev.source.repoURL }} # Can point to either a Helm chart repo or a git repo.
-    path:  {{ .Values.env.prod.source.path }}
+    path:  {{ .Values.envs.dev.source.path }}
     targetRevision: {{ .Values.envs.dev.source.targetRevision }} # For Helm, this refers to the chart version.
     
 #    # helm specific config
@@ -55,11 +56,11 @@ spec:
 
   # directory
   directory:
-      recurse: false # we follow the helm chart format, so need to recurse
+    recurse: false # we follow the helm chart format, so no need to recurse
 
   destination:
-    namespace: {{ .Values.destination.namespace }}
-    server: {{ .Values.destination.server }}
+    namespace: {{ .Values.envs.dev.destination.namespace }}
+    server: {{ .Values.envs.dev.destination.server }}
 
   # Sync policy
   syncPolicy:
@@ -67,7 +68,7 @@ spec:
     automated: {} # automated sync by default retries failed attempts 5 times with following delays between attempts ( 5s, 10s, 20s, 40s, 80s ); retry controlled using `retry` field.
 #      prune: true # Specifies if resources should be pruned during auto-syncing ( false by default ).
 #      selfHeal: true # Specifies if partial app sync should be executed when resources are changed only in target Kubernetes cluster and no git change detected ( false by default ).
-#      allowEmpty: false # Allows deleting all application resources during automatic syncing ( false by default ).
+#      allowEmpty: false # Allows deleting all application resou`rces during automatic syncing ( false by default ).
     syncOptions:     # Sync options which modifies sync behavior
 #    - Validate=false # disables resource validation (equivalent to 'kubectl apply --validate=false') ( true by default ).
     - CreateNamespace=true # Namespace Auto-Creation ensures that namespace specified as the application destination exists in the destination cluster.
@@ -94,6 +95,6 @@ spec:
 #    kind: "*"
 #    managedFieldsManagers:
 #    - kube-controller-manager
-
+{{ end }}
 
 

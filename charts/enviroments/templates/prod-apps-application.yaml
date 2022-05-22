@@ -1,3 +1,4 @@
+{{ if eq .Values.env "prod" }}
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
@@ -13,7 +14,7 @@ spec:
 
   source:
     repoURL: {{ .Values.envs.prod.source.repoURL }} # Can point to either a Helm chart repo or a git repo.
-    path:  {{ .Values.env.prod.source.path }}
+    path:  {{ .Values.envs.prod.source.path }}
     targetRevision: {{ .Values.envs.prod.source.targetRevision }} # For Helm, this refers to the chart version.
     
 #    # helm specific config
@@ -55,11 +56,11 @@ spec:
 
   # directory
   directory:
-      recurse: false # we follow the helm chart format, so need to recurse
+    recurse: false # we follow the helm chart format, so no need to recurse
 
   destination:
-    namespace: {{ .Values.destination.namespace }}
-    server: {{ .Values.destination.server }}
+    namespace: {{ .Values.envs.prod.destination.namespace }}
+    server: {{ .Values.envs.prod.destination.server }}
 
   # Sync policy
   syncPolicy:
@@ -94,6 +95,6 @@ spec:
 #    kind: "*"
 #    managedFieldsManagers:
 #    - kube-controller-manager
-
+{{ end }}
 
 
