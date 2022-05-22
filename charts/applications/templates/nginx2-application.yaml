@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: {{ .Values.nginx2.name }}-application
+  name: {{ .Values.apps.nginx2.name }}-application
   # You'll usually want to add your resources to the argocd namespace.
   namespace: argocd
     # Add this finalizer ONLY if you want these to cascade delete.
@@ -12,9 +12,9 @@ spec:
   project: default
 
   source:
-    repoURL: {{ .Values.nginx2.source.repoURL }} # Can point to either a Helm chart repo or a git repo.
-    path:  {{ .Values.nginx2.source.path }}
-    targetRevision: {{ .Values.nginx2.source.targetRevision }} # For Helm, this refers to the chart version.
+    repoURL: {{ .Values.apps.nginx2.source.repoURL }} # Can point to either a Helm chart repo or a git repo.
+    path:  {{ .Values.apps.nginx2.source.path }}
+    targetRevision: {{ .Values.apps.nginx2.source.targetRevision }} # For Helm, this refers to the chart version.
     
 #    # helm specific config
 #    #chart: chart-name  # Set this when pulling directly from a Helm repo. DO NOT set for git-hosted Helm charts.
@@ -58,7 +58,7 @@ spec:
       recurse: false # we follow the helm chart format, so need to recurse
 
   destination:
-    namespace: {{ .Values.nginx2.name }}
+    namespace: {{ .Values.apps.nginx2.name }}
     server: {{ .Values.destination.server }}
 
   # Sync policy
