@@ -1,0 +1,45 @@
+# Default values for applications.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+envName: dev
+project: apps
+repoURL: https://github.com/yosefha-pg/argo-apps.git
+
+envs:
+  dev:
+    apps:
+      name: dev-apps
+      source:
+        targetRevision: main
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: argocd
+    infra:
+      name: dev-infra
+      source:
+        targetRevision: main
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: argocd
+  prod:
+    apps:
+      name: prod-apps
+      source:
+        repoURL: https://github.com/yosefha-pg/argo-apps.git
+        path: charts/applications
+        targetRevision: main
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: argocd
+    infra:
+      name: prod-infra
+      source:
+        repoURL: https://github.com/yosefha-pg/argo-apps.git
+        path: charts/applications
+        targetRevision: main
+        helm: 
+          valueFile: values-prod.yaml
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: argocd

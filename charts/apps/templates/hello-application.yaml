@@ -1,4 +1,4 @@
-{{- $app := .Values.apps.nginx -}}
+{{- $app := .Values.apps.hello -}}
 {{ if $app.enabled }}
 apiVersion: argoproj.io/v1alpha1
 kind: Application
@@ -11,7 +11,7 @@ metadata:
 #    - resources-finalizer.argocd.argoproj.io
 spec:
   # The project the application belongs to.
-  project: default
+  project: {{ .Values.project}}
 
   source:
     repoURL: {{ $app.source.repoURL }} # Can point to either a Helm chart repo or a git repo.
@@ -20,7 +20,7 @@ spec:
     
 #    # helm specific config
 #    #chart: chart-name  # Set this when pulling directly from a Helm repo. DO NOT set for git-hosted Helm charts.
-    helm:
+    helm:    
       # Helm values files for overriding values in the helm chart
       # The path is relative to the spec.source.path directory defined above
       valueFiles:
@@ -58,6 +58,7 @@ spec:
   # directory
     directory:
       recurse: false # we follow the helm chart format, so no need to recurse
+
 
   destination:
     namespace: {{ $app.name }}

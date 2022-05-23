@@ -1,9 +1,17 @@
-{{- $env := .Values.envs.dev -}}
-{{ if eq .Values.envName "dev" }}
+{{ if and (eq .Values.envName "prod") (eq .Values.project "apps") }}
+# populate $env object with current context
+{{- $env := .Values.envs.prod.apps -}}
+
+# Enforce standards & naming conventions
+{{- $repoURL := .Values.repoURL -}}
+{{- $path := (print "charts/" .Values.project) -}}
+{{- $valueFile := (print "values-" .Values.envName ".yaml") -}}
+{{- $name := (print .Values.envName "-" .Values.project) -}}
+
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: {{ $env.name }}-application
+  name: {{ $name }}-application
   # You'll usually want to add your resources to the argocd namespace.
   namespace: {{ $env.destination.namespace }}
     # Add this finalizer ONLY if you want these to cascade delete.
@@ -11,11 +19,11 @@ metadata:
 #    - resources-finalizer.argocd.argoproj.io
 spec:
   # The project the application belongs to.
-  project: default
+  project: {{ $env.project}}
 
   source:
-    repoURL: {{ $env.source.repoURL }} # Can point to either a Helm chart repo or a git repo.
-    path:  {{ $env.source.path }}
+    repoURL: {{ $repoURL }} # Can point to either a Helm chart repo or a git repo.
+    path:  {{ $path }}
     targetRevision: {{ $env.source.targetRevision }} # For Helm, this refers to the chart version.
     
 #    # helm specific config
@@ -24,7 +32,7 @@ spec:
     # Helm values files for overriding values in the helm chart
     # The path is relative to the spec.source.path directory defined above
       valueFiles:
-      - {{ $env.source.helm.valueFile }}
+      - {{ $valueFile }}
 
 #     # Extra parameters to set (same as setting through values.yaml, but these take precedence)
 #      parameters:
@@ -69,7 +77,7 @@ spec:
     automated: {} # automated sync by default retries failed attempts 5 times with following delays between attempts ( 5s, 10s, 20s, 40s, 80s ); retry controlled using `retry` field.
 #      prune: true # Specifies if resources should be pruned during auto-syncing ( false by default ).
 #      selfHeal: true # Specifies if partial app sync should be executed when resources are changed only in target Kubernetes cluster and no git change detected ( false by default ).
-#      allowEmpty: false # Allows deleting all application resou`rces during automatic syncing ( false by default ).
+#      allowEmpty: false # Allows deleting all application resources during automatic syncing ( false by default ).
     syncOptions:     # Sync options which modifies sync behavior
 #    - Validate=false # disables resource validation (equivalent to 'kubectl apply --validate=false') ( true by default ).
     - CreateNamespace=true # Namespace Auto-Creation ensures that namespace specified as the application destination exists in the destination cluster.

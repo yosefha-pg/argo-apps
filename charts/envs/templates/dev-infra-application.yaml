@@ -1,30 +1,38 @@
-{{- $app := .Values.apps.nginx2 -}}
-{{ if $app.enabled }}
+{{ if and (eq .Values.envName "dev") (eq .Values.project "infra") }}
+# populate $env object with current context
+{{- $env := .Values.envs.dev.infra -}}
+
+# Enforce standards & naming conventions
+{{- $repoURL := .Values.repoURL -}}
+{{- $path := (print "charts/" .Values.project) -}}
+{{- $valueFile := (print "values-" .Values.envName ".yaml") -}}
+{{- $name := (print .Values.envName "-" .Values.project) -}}
+
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: {{ $app.name }}-application
+  name: {{ $name }}-application
   # You'll usually want to add your resources to the argocd namespace.
-  namespace: argocd
+  namespace: {{ $env.destination.namespace }}
     # Add this finalizer ONLY if you want these to cascade delete.
 #  finalizers:
 #    - resources-finalizer.argocd.argoproj.io
 spec:
   # The project the application belongs to.
-  project: default
+  project: {{ $env.project}}
 
   source:
-    repoURL: {{ $app.source.repoURL }} # Can point to either a Helm chart repo or a git repo.
-    path:  {{ $app.source.path }}
-    targetRevision: {{ $app.source.targetRevision }} # For Helm, this refers to the chart version.
+    repoURL: {{ $repoURL }} # Can point to either a Helm chart repo or a git repo.
+    path:  {{ $path }}
+    targetRevision: {{ $env.source.targetRevision }} # For Helm, this refers to the chart version.
     
 #    # helm specific config
 #    #chart: chart-name  # Set this when pulling directly from a Helm repo. DO NOT set for git-hosted Helm charts.
-    helm:    
-      # Helm values files for overriding values in the helm chart
-      # The path is relative to the spec.source.path directory defined above
+    helm:
+    # Helm values files for overriding values in the helm chart
+    # The path is relative to the spec.source.path directory defined above
       valueFiles:
-      - {{ .Values.source.helm.valueFile }}
+      - {{ $valueFile }}
 
 #     # Extra parameters to set (same as setting through values.yaml, but these take precedence)
 #      parameters:
@@ -59,10 +67,9 @@ spec:
     directory:
       recurse: false # we follow the helm chart format, so no need to recurse
 
-
   destination:
-    namespace: {{ $app.name }}
-    server: {{ .Values.destination.server }}
+    namespace: {{ $env.destination.namespace }}
+    server: {{ $env.destination.server }}
 
   # Sync policy
   syncPolicy:

@@ -1,0 +1,28 @@
+# Default values for apps.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+project: infra
+
+source:
+  helm:
+    valueFile: values-dev.yaml
+destination:
+  server: https://kubernetes.default.svc
+  namespace: argocd
+
+apps:
+  foo:
+    name: foo
+    enabled: true
+    source:
+      repoURL: https://github.com/yosefha-pg/argo-nginx.git
+      path: charts/nginx
+      targetRevision: main
+  bar:
+    name: bar
+    enabled: true
+    source:
+      repoURL: https://github.com/yosefha-pg/argo-nginx2.git
+      path: charts/nginx2
+      targetRevision: main  
