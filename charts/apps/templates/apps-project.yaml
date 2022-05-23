@@ -15,6 +15,11 @@ spec:
   - '*'
 
  # # Only permit applications to deploy to the guestbook namespace in the same cluster
+ destinations:
+  - namespace: '*'
+    server: '*'
+
+ # # Only permit applications to deploy to the guestbook namespace in the same cluster
  # destinations:
  # - namespace: guestbook
  #   server: https://kubernetes.default.svc
@@ -23,7 +28,12 @@ spec:
 #  clusterResourceWhitelist:
 #  - group: ''
 #    kind: Namespace
-#
+
+  # Allow all namespaced-scoped resources to be created, except for ResourceQuota, LimitRange, NetworkPolicy
+  namespaceResourceBlacklist:
+  - group: ''
+    kind: ''
+
 #  # Allow all namespaced-scoped resources to be created, except for ResourceQuota, LimitRange, NetworkPolicy
 #  namespaceResourceBlacklist:
 #  - group: ''
