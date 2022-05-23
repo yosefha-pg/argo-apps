@@ -14,8 +14,8 @@ spec:
   sourceRepos:
   - '*'
 
- # # Only permit applications to deploy to the guestbook namespace in the same cluster
- destinations:
+ # # permit applications to deploy
+  destinations:
   - namespace: '*'
     server: '*'
 
@@ -29,7 +29,7 @@ spec:
 #  - group: ''
 #    kind: Namespace
 
-  # Allow all namespaced-scoped resources to be created, except for ResourceQuota, LimitRange, NetworkPolicy
+  # Allow all namespaced-scoped resources to be created
   namespaceResourceBlacklist:
   - group: ''
     kind: ''
