@@ -4,21 +4,23 @@
 
 envName: dev
 project: apps
-repoURL: https://github.com/papayaglobal/payments-helm-charts.git
+repoURL: https://github.com/yosefha-pg/argo-apps.git
+#repoURL: https://github.com/papayaglobal/payments-helm-charts.git
+
 
 envs:
   dev:
     apps:
       name: dev-apps
       source:
-        targetRevision: main
+        targetRevision: dev
       destination:
         server: https://kubernetes.default.svc
         namespace: argocd
     infra:
       name: dev-infra
       source:
-        targetRevision: main
+        targetRevision: dev
       destination:
         server: https://kubernetes.default.svc
         namespace: argocd
