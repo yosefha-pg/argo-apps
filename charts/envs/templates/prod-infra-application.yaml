@@ -1,4 +1,4 @@
-{{ if and (eq .Values.envName "prod") (eq .Values.project "infra") }}
+{{ if and (eq .Values.envName "prod") (eq .Values.project "infra") -}}
 # populate $env object with current context
 {{- $env := .Values.envs.prod.infra -}}
 
@@ -6,7 +6,7 @@
 {{- $repoURL := .Values.repoURL -}}
 {{- $path := (print "charts/" .Values.project) -}}
 {{- $valueFile := (print "values-" .Values.envName ".yaml") -}}
-{{- $name := (print .Values.envName "-" .Values.project) -}}
+{{- $name := (print .Values.envName "-" .Values.project) }}
 
 apiVersion: argoproj.io/v1alpha1
 kind: Application
@@ -19,7 +19,7 @@ metadata:
 #    - resources-finalizer.argocd.argoproj.io
 spec:
   # The project the application belongs to.
-  project: {{ $env.project}}
+  project: default
 
   source:
     repoURL: {{ $repoURL }} # Can point to either a Helm chart repo or a git repo.
