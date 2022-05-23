@@ -4,7 +4,7 @@
 
 envName: dev
 project: apps
-repoURL: https://github.com/yosefha-pg/argo-apps.git
+repoURL: https://github.com/papayaglobal/payments-helm-charts.git
 
 envs:
   dev:
